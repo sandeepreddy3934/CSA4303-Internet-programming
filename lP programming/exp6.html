@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Cake Ordering</title>
+    <style>
+        body { font-family: Arial; margin: 0; background: #fff5f5; }
+        header { background: #a83250; color: white; text-align: center; padding: 20px; }
+        main { max-width: 700px; margin: 20px auto; padding: 15px; }
+        .cake { background: white; padding: 15px; margin: 12px 0; border-radius: 8px; }
+        input, select, button { padding: 10px; margin: 6px 0; }
+        input, select { max-width: 100%; }
+        button { background: #a83250; color: white; border: none; cursor: pointer; }
+        footer { text-align: center; padding: 15px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Sweet Treats Cake Shop</h1>
+    <p>Order Your Favourite Cake Online!</p>
+</header>
+
+<main>
+    <h2>Search Cakes</h2>
+    <input id="search" placeholder="Search cake name">
+
+    <select id="category">
+        <option value="All">All Categories</option>
+        <option value="Chocolate">Chocolate</option>
+        <option value="Fruit">Fruit</option>
+        <option value="Birthday">Birthday</option>
+    </select>
+
+    <select id="price">
+        <option value="all">All Prices</option>
+        <option value="500">Below ₹500</option>
+        <option value="1000">Below ₹1000</option>
+    </select>
+
+    <button onclick="showCakes()">Search</button>
+
+    <h2>Available Cakes</h2>
+    <div id="cakes"></div>
+
+    <h2>My Cart</h2>
+    <p id="cart">No cakes added.</p>
+
+    <h2>Shipping Details</h2>
+    <input id="customer" placeholder="Your Name">
+    <input id="address" placeholder="Delivery Address">
+    <button onclick="placeOrder()">Place Order</button>
+    <p id="message"></p>
+
+    <h2>Admin</h2>
+    <p>Admin can manage cake products and update order status.</p>
+    <button onclick="showStatus()">View Order Status</button>
+    <p id="status"></p>
+</main>
+
+<footer>
+    <p>&copy; 2026 Sweet Treats Cake Shop</p>
+</footer>
+
+<script>
+    const cakes = [
+        {name: "Chocolate Cake", category: "Chocolate", price: 450},
+        {name: "Fruit Cake", category: "Fruit", price: 350},
+        {name: "Birthday Cake", category: "Birthday", price: 800},
+        {name: "Chocolate Truffle", category: "Chocolate", price: 650}
+    ];
+
+    let cart = [];
+    let ordered = false;
+
+    function showCakes() {
+        let search = document.getElementById("search").value.toLowerCase();
+        let category = document.getElementById("category").value;
+        let price = document.getElementById("price").value;
+        let list = document.getElementById("cakes");
+
+        list.replaceChildren();
+
+        cakes.filter(c =>
+            c.name.toLowerCase().includes(search) &&
+            (category === "All" || c.category === category) &&
+            (price === "all" || c.price < Number(price))
+        ).forEach(c => {
+            let item = document.createElement("div");
+            item.className = "cake";
+
+            let name = document.createElement("h3");
+            name.textContent = c.name;
+
+            let details = document.createElement("p");
+            details.textContent = c.category + " Cake - ₹" + c.price;
+
+            let button = document.createElement("button");
+            button.textContent = "Add to Cart";
+            button.onclick = () => {
+                cart.push(c);
+                updateCart();
+            };
+
+            item.append(name, details, button);
+            list.appendChild(item);
+        });
+    }
+
+    function updateCart() {
+        document.getElementById("cart").textContent =
+            cart.length
+            ? cart.map(c => c.name).join(", ") +
+              " | Total: ₹" + cart.reduce((sum, c) => sum + c.price, 0)
+            : "No cakes added.";
+    }
+
+    function placeOrder() {
+        let name = document.getElementById("customer").value.trim();
+        let address = document.getElementById("address").value.trim();
+
+        if (!name || !address || cart.length === 0) {
+            document.getElementById("message").textContent =
+                "Enter your name, address, and add a cake.";
+            return;
+        }
+
+        ordered = true;
+        document.getElementById("message").textContent =
+            "Order placed successfully! Total: ₹" +
+            cart.reduce((sum, c) => sum + c.price, 0) +
+            ". Demo order only.";
+    }
+
+    function showStatus() {
+        document.getElementById("status").textContent =
+            ordered ? "Order Status: Received (Demo)" : "No orders placed yet.";
+    }
+
+    showCakes();
+</script>
+
+</body>
+</html>

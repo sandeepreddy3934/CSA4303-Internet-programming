@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Bus Ticket Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+        }
+        header {
+            background: #123b63;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        main {
+            max-width: 600px;
+            margin: 25px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background: #087f8c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .bus {
+            background: #e0f2f1;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        footer {
+            text-align: center;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Online Bus Ticket Booking</h1>
+    <p>Book Your Journey Easily</p>
+</header>
+
+<main>
+    <h2>Search Buses</h2>
+
+    <form id="busForm">
+        <label for="source">From:</label>
+        <input id="source" type="text" placeholder="Enter source" required>
+
+        <label for="destination">To:</label>
+        <input id="destination" type="text"
+               placeholder="Enter destination" required>
+
+        <label for="date">Journey Date:</label>
+        <input id="date" type="date" required>
+
+        <label for="category">Bus Category:</label>
+        <select id="category">
+            <option>Volvo AC</option>
+            <option>Sleeper Coach</option>
+            <option>Ordinary Coach</option>
+        </select>
+
+        <button type="submit">Search Buses</button>
+    </form>
+
+    <div id="result"></div>
+
+    <h2>Comments</h2>
+    <input type="text" id="comment" placeholder="Enter your comment">
+    <button type="button" onclick="addComment()">Post Comment</button>
+    <p id="commentResult"></p>
+
+    <h2>Admin Information</h2>
+    <p>Admin can manage bus details, categories, users, and reports.</p>
+</main>
+
+<footer>
+    <p>&copy; 2026 Online Bus Booking System</p>
+</footer>
+
+<script>
+    document.getElementById("busForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        let source = document.getElementById("source").value;
+        let destination = document.getElementById("destination").value;
+        let date = document.getElementById("date").value;
+        let category = document.getElementById("category").value;
+
+        if (source.toLowerCase() === destination.toLowerCase()) {
+            document.getElementById("result").textContent =
+                "Source and destination must be different.";
+            return;
+        }
+
+        document.getElementById("result").innerHTML = `
+            <div class="bus">
+                <h3>Available Bus (Demo)</h3>
+                <p>Route: ${source} to ${destination}</p>
+                <p>Date: ${date}</p>
+                <p>Category: ${category}</p>
+                <p>Available Seats: 30</p>
+                <p>Fare: ₹500 (Demo)</p>
+                <button type="button" onclick="alert('Demo only: no ticket booked.')">
+                    Book Ticket
+                </button>
+            </div>`;
+    });
+
+    function addComment() {
+        let comment = document.getElementById("comment").value.trim();
+        document.getElementById("commentResult").textContent =
+            comment ? "Comment posted: " + comment : "Please enter a comment.";
+    }
+</script>
+
+</body>
+</html>

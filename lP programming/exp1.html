@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Library Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        header {
+            background: #243b55;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background: #141e30;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #00d4ff;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .hero {
+            background: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px #ccc;
+        }
+
+        .hero h2 {
+            color: #243b55;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: #243b55;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #141e30;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 8px #ccc;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #243b55;
+        }
+
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ccc;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 11px;
+            margin: 8px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #243b55;
+            color: white;
+        }
+
+        .search {
+            margin-bottom: 20px;
+        }
+
+        .fine {
+            color: red;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #141e30;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #243b55;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 College Library Management System</h1>
+    <p>Manage Books, Students, Materials and Fines</p>
+</header>
+
+<nav>
+    <a onclick="showSection('home')">Home</a>
+    <a onclick="showSection('books')">Search Books</a>
+    <a onclick="showSection('login')">Login</a>
+    <a onclick="showSection('admin')">Admin</a>
+    <a onclick="showSection('user')">Student</a>
+    <a onclick="showSection('materials')">Materials</a>
+    <a onclick="showSection('contact')">Contact</a>
+</nav>
+
+<div class="container">
+
+    <!-- HOME -->
+    <section id="home" class="section active">
+
+        <div class="hero">
+            <h2>Welcome to College Library</h2>
+
+            <p>
+                Search books, manage borrowing history, check fines,
+                and download academic materials easily.
+            </p>
+
+            <button onclick="showSection('books')">
+                Search Books
+            </button>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>📚 Books</h3>
+                <p>Search and view available books.</p>
+            </div>
+
+            <div class="card">
+                <h3>👨‍🎓 Students</h3>
+                <p>Manage student borrowing history.</p>
+            </div>
+
+            <div class="card">
+                <h3>💰 Fines</h3>
+                <p>Check pending library fines.</p>
+            </div>
+
+            <div class="card">
+                <h3>📄 Materials</h3>
+                <p>Download semester-wise materials.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BOOK SEARCH -->
+    <section id="books" class="section">
+
+        <h2>Search Books</h2>
+
+        <input
+            type="text"
+            id="bookSearch"
+            class="search"
+            placeholder="Search by book name or author..."
+            onkeyup="searchBooks()"
+        >
+
+        <table id="bookTable">
+
+            <tr>
+                <th>Book ID</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>101</td>
+                <td>Artificial Intelligence</td>
+                <td>Stuart Russell</td>
+                <td>2024</td>
+                <td>Available</td>
+            </tr>
+
+            <tr>
+                <td>102</td>
+                <td>Machine Learning</td>
+                <td>Tom Mitchell</td>
+                <td>2023</td>
+                <td>Issued</td>
+            </tr>
+
+            <tr>
+                <td>103</td>
+                <td>Python Programming</td>
+                <td>Mark Lutz</td>
+                <td>2024</td>
+                <td>Available</td>
+            </tr>
+
+            <tr>
+                <td>104</td>
+                <td>Database Management</td>
+                <td>Raghu Ramakrishnan</td>
+                <td>2022</td>
+                <td>Available</td>
+            </tr>
+
+        </table>
+
+    </section>
+
+
+    <!-- LOGIN -->
+    <section id="login" class="section">
+
+        <h2>Login</h2>
+
+        <form onsubmit="login(event)">
+
+            <label>Email / Username</label>
+            <input type="text" id="username" required>
+
+            <label>Password</label>
+            <input type="password" id="password" required>
+
+            <label>Login As</label>
+
+            <select id="role">
+                <option value="student">Student</option>
+                <option value="admin">Librarian Admin</option>
+            </select>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+    </section>
+
+
+    <!-- ADMIN -->
+    <section id="admin" class="section">
+
+        <h2>Librarian Admin Dashboard</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>➕ Add Book</h3>
+                <p>Add new books to library.</p>
+                <button onclick="showSection('addbook')">
+                    Add Book
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>✏️ Manage Books</h3>
+                <p>Update or delete books.</p>
+            </div>
+
+            <div class="card">
+                <h3>📖 Issue Book</h3>
+                <p>Issue books to students.</p>
+            </div>
+
+            <div class="card">
+                <h3>↩️ Return Book</h3>
+                <p>Update returned book status.</p>
+            </div>
+
+            <div class="card">
+                <h3>💰 Fine</h3>
+                <p>Calculate student fines.</p>
+            </div>
+
+            <div class="card">
+                <h3>📄 Materials</h3>
+                <p>Upload semester materials.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ADD BOOK -->
+    <section id="addbook" class="section">
+
+        <h2>Add New Book</h2>
+
+        <form onsubmit="addBook(event)">
+
+            <label>Book Name</label>
+            <input type="text" id="newBook" required>
+
+            <label>Author</label>
+            <input type="text" id="author" required>
+
+            <label>Publication Year</label>
+            <input type="number" id="year" required>
+
+            <button type="submit">
+                Add Book
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- STUDENT -->
+    <section id="user" class="section">
+
+        <h2>Student Dashboard</h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>🔎 Search Book</h3>
+                <p>Find required books.</p>
+
+                <button onclick="showSection('books')">
+                    Search
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>📚 Borrow History</h3>
+                <p>View issued and returned books.</p>
+
+                <button onclick="showSection('history')">
+                    View History
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>💰 My Fine</h3>
+                <p>Check pending fines.</p>
+
+                <button onclick="showSection('fine')">
+                    Check Fine
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>👤 My Profile</h3>
+                <p>View student profile.</p>
+
+                <button onclick="showSection('profile')">
+                    Profile
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BORROW HISTORY -->
+    <section id="history" class="section">
+
+        <h2>My Borrow History</h2>
+
+        <table>
+
+            <tr>
+                <th>Book Name</th>
+                <th>Issue Date</th>
+                <th>Expected Return</th>
+                <th>Status</th>
+            </tr>
+
+            <tr>
+                <td>Artificial Intelligence</td>
+                <td>01-09-2026</td>
+                <td>15-09-2026</td>
+                <td>Returned</td>
+            </tr>
+
+            <tr>
+                <td>Machine Learning</td>
+                <td>20-09-2026</td>
+                <td>04-10-2026</td>
+                <td>Not Returned</td>
+            </tr>
+
+        </table>
+
+    </section>
+
+
+    <!-- FINE -->
+    <section id="fine" class="section">
+
+        <h2>My Fine</h2>
+
+        <div class="card">
+
+            <h3>Current Fine</h3>
+
+            <p class="fine">₹50</p>
+
+            <br>
+
+            <p>
+                Fine for late return of Machine Learning book.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- MATERIALS -->
+    <section id="materials" class="section">
+
+        <h2>Study Materials</h2>
+
+        <label>Year</label>
+
+        <select>
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+        </select>
+
+        <label>Semester</label>
+
+        <select>
+            <option>Semester 1</option>
+            <option>Semester 2</option>
+            <option>Semester 3</option>
+            <option>Semester 4</option>
+            <option>Semester 5</option>
+            <option>Semester 6</option>
+            <option>Semester 7</option>
+            <option>Semester 8</option>
+        </select>
+
+        <table>
+
+            <tr>
+                <th>Material</th>
+                <th>Subject</th>
+                <th>Download</th>
+            </tr>
+
+            <tr>
+                <td>AI Notes</td>
+                <td>Artificial Intelligence</td>
+                <td>
+                    <button onclick="downloadFile()">
+                        Download
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>ML Notes</td>
+                <td>Machine Learning</td>
+                <td>
+                    <button onclick="downloadFile()">
+                        Download
+                    </button>
+                </td>
+            </tr>
+
+        </table>
+
+    </section>
+
+
+    <!-- PROFILE -->
+    <section id="profile" class="section">
+
+        <h2>My Profile</h2>
+
+        <form>
+
+            <label>Student Name</label>
+            <input type="text" value="Sandeep Reddy">
+
+            <label>Student ID</label>
+            <input type="text" value="STU101">
+
+            <label>Email</label>
+            <input type="email" value="student@gmail.com">
+
+            <label>Department</label>
+            <input type="text" value="Artificial Intelligence and Machine Learning">
+
+            <button type="button">
+                Update Profile
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+
+        <h2>Contact Library</h2>
+
+        <form onsubmit="contact(event)">
+
+            <label>Name</label>
+            <input type="text" required>
+
+            <label>Email</label>
+            <input type="email" required>
+
+            <label>Message</label>
+            <textarea rows="5" required></textarea>
+
+            <button type="submit">
+                Send Message
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+<footer>
+    <p>© 2026 College Library Management System</p>
+</footer>
+
+
+<script>
+
+    // Change sections
+    function showSection(sectionId) {
+
+        let sections = document.querySelectorAll(".section");
+
+        sections.forEach(function(section) {
+            section.classList.remove("active");
+        });
+
+        document.getElementById(sectionId).classList.add("active");
+
+        window.scrollTo(0, 0);
+    }
+
+
+    // Search Books
+    function searchBooks() {
+
+        let input =
+            document.getElementById("bookSearch")
+            .value.toLowerCase();
+
+        let table =
+            document.getElementById("bookTable");
+
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 1; i < rows.length; i++) {
+
+            let text =
+                rows[i].innerText.toLowerCase();
+
+            if (text.includes(input)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+
+    // Login
+    function login(event) {
+
+        event.preventDefault();
+
+        let role =
+            document.getElementById("role").value;
+
+        if (role === "admin") {
+
+            alert("Admin Login Successful");
+
+            showSection("admin");
+
+        } else {
+
+            alert("Student Login Successful");
+
+            showSection("user");
+        }
+    }
+
+
+    // Add Book
+    function addBook(event) {
+
+        event.preventDefault();
+
+        let book =
+            document.getElementById("newBook").value;
+
+        alert(book + " added successfully!");
+
+        document.getElementById("newBook").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("year").value = "";
+    }
+
+
+    // Contact Form
+    function contact(event) {
+
+        event.preventDefault();
+
+        alert("Your message has been sent successfully!");
+    }
+
+
+    // Download
+    function downloadFile() {
+
+        alert("Material download started!");
+    }
+
+</script>
+
+</body>
+</html>

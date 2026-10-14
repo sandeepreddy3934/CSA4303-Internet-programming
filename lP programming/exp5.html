@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Reservation System</title>
+    <style>
+        body { font-family: Arial; background: #eef3f8; margin: 0; }
+        header { background: #163d69; color: white; text-align: center; padding: 20px; }
+        main { max-width: 550px; margin: 25px auto; background: white; padding: 20px; }
+        input, select, button { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+        button { background: #087e8b; color: white; border: none; cursor: pointer; }
+        footer { text-align: center; padding: 15px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Flight Reservation System</h1>
+    <p>Book Your Flight Easily</p>
+</header>
+
+<main>
+    <h2>Search Flights</h2>
+
+    <form id="flightForm">
+        <label for="from">From:</label>
+        <input id="from" required placeholder="Departure city">
+
+        <label for="to">To:</label>
+        <input id="to" required placeholder="Destination city">
+
+        <label for="date">Travel Date:</label>
+        <input id="date" type="date" required>
+
+        <label for="classType">Travel Class:</label>
+        <select id="classType">
+            <option>Economy</option>
+            <option>Business</option>
+            <option>First Class</option>
+        </select>
+
+        <button type="submit">Search Flights</button>
+    </form>
+
+    <div id="result"></div>
+
+    <h2>My Ticket</h2>
+    <input id="ticket" placeholder="Enter booking ID">
+    <button onclick="viewTicket()">View Booking Status</button>
+    <button onclick="cancelTicket()">Cancel Ticket</button>
+    <p id="message"></p>
+
+    <h2>Customer Feedback</h2>
+    <input id="feedback" placeholder="Enter your feedback">
+    <button onclick="submitFeedback()">Submit Feedback</button>
+    <p id="feedbackMessage"></p>
+</main>
+
+<footer>
+    <p>&copy; 2026 Flight Reservation System</p>
+</footer>
+
+<script>
+    document.getElementById("flightForm").onsubmit = function(e) {
+        e.preventDefault();
+
+        let from = document.getElementById("from").value.trim();
+        let to = document.getElementById("to").value.trim();
+        let date = document.getElementById("date").value;
+        let cls = document.getElementById("classType").value;
+
+        if (from.toLowerCase() === to.toLowerCase()) {
+            document.getElementById("result").textContent =
+                "Departure and destination must be different.";
+            return;
+        }
+
+        document.getElementById("result").innerHTML =
+            "<h3>Sample Flight</h3>" +
+            "<p>Route: " + from + " to " + to + "</p>" +
+            "<p>Date: " + date + "</p>" +
+            "<p>Class: " + cls + "</p>" +
+            "<p>Available Seats: 20 (Demo)</p>" +
+            "<p>Fare: ₹4000 (Demo)</p>" +
+            "<button onclick='alert(\"Demo only: no ticket booked.\")'>Book Flight</button>";
+    };
+
+    function viewTicket() {
+        let id = document.getElementById("ticket").value.trim();
+        document.getElementById("message").textContent =
+            id ? "Demo only: booking status is not connected to a database."
+               : "Please enter a booking ID.";
+    }
+
+    function cancelTicket() {
+        let id = document.getElementById("ticket").value.trim();
+        document.getElementById("message").textContent =
+            id ? "Demo only: ticket cancellation requires a booking system."
+               : "Please enter a booking ID.";
+    }
+
+    function submitFeedback() {
+        let feedback = document.getElementById("feedback").value.trim();
+        document.getElementById("feedbackMessage").textContent =
+            feedback ? "Thank you for your feedback!"
+                     : "Please enter your feedback.";
+    }
+</script>
+
+</body>
+</html>
